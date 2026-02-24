@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>GreenPulse — Real-Time Carbon Intelligence</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   GreenPulse Frontend — Production-Ready Responsive Design
+   Mobile-first, works on all screen sizes
+   ═══════════════════════════════════════════════════════════════ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --ink: #0a0f0d;
+  --ink-light: #162319;
+  --ink-lighter: #1f2f24;
+  --acid: #7fff00;
+  --acid-dim: rgba(127, 255, 0, 0.15);
+  --text: #e0f2e4;
+  --text-dim: #8fb89a;
+  --text-dimmer: #4d7055;
+  --border: #2a4a2f;
+  --delhi: #7fff00;
+  --mumbai: #38bdf8;
+  --kolkata: #f5a623;
+  --chennai: #c084fc;
+  --prayagraj: #ff6b6b;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--ink);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+header {
+  background: linear-gradient(135deg, var(--ink-light) 0%, var(--ink) 100%);
+  border-bottom: 2px solid var(--border);
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  font-size: 36px;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--acid);
+  letter-spacing: -0.5px;
+}
+
+.logo-subtitle {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.live-badge {
+  background: var(--acid-dim);
+  border: 1px solid var(--acid);
+  padding: 8px 16px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--acid);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--acid);
+  border-radius: 50%;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+/* ── Container ───────────────────────────────────────────────── */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ── City Selector ───────────────────────────────────────────── */
+.city-selector {
+  background: var(--ink-light);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.city-selector h2 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.city-selector-subtitle {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+
+.city-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.city-card {
+  background: var(--ink);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.city-card:hover {
+  border-color: var(--acid);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(127, 255, 0, 0.15);
+}
+
+.city-card.active {
+  background: var(--acid-dim);
+  border-color: var(--acid);
+}
+
+.city-emoji {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.city-name {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.city-stats {
+  font-size: 12px;
+  color: var(--text-dim);
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.city-stat {
+  font-weight: 600;
+}
+
+/* ── Metrics Bar ─────────────────────────────────────────────── */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.metric {
+  background: linear-gradient(135deg, var(--ink-light) 0%, var(--ink-lighter) 100%);
+  border-left: 4px solid var(--acid);
+  border-radius: 12px;
+  padding: 20px;
+  transition: transform 0.2s ease;
+}
+
+.metric:hover {
+  transform: translateY(-2px);
+}
+
+.metric-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dimmer);
+  margin-bottom: 8px;
+}
+
+.metric-value {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--acid);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.metric-subtitle {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* ── Zone Cards ──────────────────────────────────────────────── */
+.zones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.zone-card {
+  background: var(--ink-light);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.zone-card:hover {
+  border-color: var(--acid);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(127, 255, 0, 0.1);
+}
+
+.zone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.zone-info h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.zone-city-label {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.zone-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.zone-badge.ok {
+  background: rgba(127, 255, 0, 0.15);
+  color: var(--acid);
+}
+
+.zone-badge.alert {
+  background: rgba(255, 107, 53, 0.15);
+  color: #ff6b35;
+}
+
+.zone-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.zone-metric {
+  background: var(--ink);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.zone-metric-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+  margin-bottom: 6px;
+}
+
+.zone-metric-value {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* ── Chat Container ──────────────────────────────────────────── */
+.chat-container {
+  background: var(--ink-light);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto 24px;
+}
+
+.chat-header {
+  margin-bottom: 16px;
+}
+
+.chat-header h2 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.chat-header-subtitle {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.quick-questions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.quick-question {
+  background: var(--ink);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-dim);
+}
+
+.quick-question:hover {
+  background: var(--acid-dim);
+  border-color: var(--acid);
+  color: var(--acid);
+}
+
+.chat-messages {
+  max-height: 450px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--ink);
+  border-radius: 12px;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.message {
+  margin-bottom: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  max-width: 85%;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message.user {
+  background: var(--acid-dim);
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+
+.message.ai {
+  background: var(--ink-lighter);
+  border-bottom-left-radius: 4px;
+}
+
+.message strong {
+  color: var(--acid);
+}
+
+.message-sources {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-dimmer);
+}
+
+.typing-indicator {
+  display: flex;
+  gap: 6px;
+  padding: 14px;
+  background: var(--ink-lighter);
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--text-dim);
+  border-radius: 50%;
+  animation: typing 1.4s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.chat-input-container {
+  display: flex;
+  gap: 12px;
+}
+
+.chat-input {
+  flex: 1;
+  background: var(--ink);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--acid);
+}
+
+.chat-input::placeholder {
+  color: var(--text-dimmer);
+}
+
+.chat-button {
+  background: var(--acid);
+  color: var(--ink);
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chat-button:hover:not(:disabled) {
+  background: #9fff2a;
+  transform: scale(1.05);
+}
+
+.chat-button:disabled {
+  background: var(--border);
+  color: var(--text-dimmer);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-dim);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+footer strong {
+  color: var(--acid);
+}
+
+/* ── Loading State ───────────────────────────────────────────── */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border);
+  border-top-color: var(--acid);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .city-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+  
+  .zones {
+    grid-template-columns: 1fr;
+  }
+  
+  .metric-value {
+    font-size: 28px;
+  }
+  
+  .zone-metrics {
+    grid-template-columns: 1fr;
+  }
+  
+  .message {
+    max-width: 95%;
+  }
+  
+  .chat-input-container {
+    flex-direction: column;
+  }
+  
+  .chat-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text {
+    font-size: 20px;
+  }
+  
+  .city-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .metric-value {
+    font-size: 24px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <div class="logo">
+      <span class="logo-icon">🌿</span>
+      <div>
+        <div class="logo-text">GreenPulse</div>
+        <div class="logo-subtitle">Real-Time Carbon Intelligence · Pathway + Langchain + WAQI + Gemini</div>
+      </div>
+    </div>
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      <span id="liveStatus">CONNECTING...</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- City Selector -->
+  <div class="city-selector">
+    <h2>🌍 Select Cities to Monitor</h2>
+    <p class="city-selector-subtitle">Choose 1-5 cities · Live data from WAQI/CPCB monitoring stations</p>
+    <div class="city-grid" id="cityGrid">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Loading cities...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Metrics -->
+  <div class="metrics" id="metricsContainer">
+    <div class="metric">
+      <div class="metric-label">🌫 Combined CO₂</div>
+      <div class="metric-value" id="totalCO2">—</div>
+      <div class="metric-subtitle">kg/hr across all zones</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">💨 Average AQI</div>
+      <div class="metric-value" id="avgAQI">—</div>
+      <div class="metric-subtitle">real-time from WAQI</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">📍 Active Cities</div>
+      <div class="metric-value" id="activeCities">0</div>
+      <div class="metric-subtitle"><span id="zoneCount">0</span> zones monitored</div>
+    </div>
+  </div>
+
+  <!-- Zone Cards -->
+  <div class="zones" id="zonesContainer"></div>
+
+  <!-- AI Chat -->
+  <div class="chat-container">
+    <div class="chat-header">
+      <h2>🤖 Ask GreenPulse AI</h2>
+      <p class="chat-header-subtitle">Powered by Langchain RAG + Gemini · Grounded in NCAP, GRAP, Green Bharat Mission policies</p>
+    </div>
+    
+    <div class="quick-questions">
+      <div class="quick-question" onclick="askQuestion('Why is Delhi AQI high today?')">Why Delhi AQI high?</div>
+      <div class="quick-question" onclick="askQuestion('Compare all cities CO2 emissions')">Compare cities</div>
+      <div class="quick-question" onclick="askQuestion('What GRAP stage applies now?')">GRAP stage?</div>
+      <div class="quick-question" onclick="askQuestion('What immediate actions reduce emissions?')">Mitigation actions?</div>
+      <div class="quick-question" onclick="askQuestion('Analyze Mumbai pollution trends')">Mumbai trends</div>
+    </div>
+    
+    <div class="chat-messages" id="chatMessages">
+      <div class="message ai">
+        <strong>🌿 GreenPulse AI is ready!</strong><br><br>
+        I'm monitoring <strong>Delhi · Mumbai · Kolkata · Chennai · Prayagraj</strong> in real-time using live WAQI/CPCB sensor data.<br><br>
+        Ask me about emissions, AQI levels, policy recommendations (NCAP, GRAP), or city comparisons.
+      </div>
+    </div>
+    
+    <div class="chat-input-container">
+      <input 
+        type="text" 
+        class="chat-input" 
+        id="chatInput" 
+        placeholder="Ask about any city's emissions, pollution, or mitigation strategies..."
+        onkeypress="if(event.key==='Enter')sendMessage()"
+      >
+      <button class="chat-button" id="sendButton" onclick="sendMessage()">
+        Send
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <strong>GreenPulse</strong> — Real-Time Carbon Intelligence for Sustainable Indian Cities<br>
+  Built with Pathway · Langchain · WAQI Live API · Google Gemini · ChromaDB RAG<br>
+  Green Bharat Hackathon · Supports 5 cities with custom city search
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// GreenPulse Frontend JavaScript
+// ═══════════════════════════════════════════════════════════════
+
+// Always talk to the FastAPI backend on port 8000
+const BACKEND_PORT = 8000;
+const API_BASE = `${window.location.protocol}//${window.location.hostname}:${BACKEND_PORT}`;
+const WS_PROTOCOL = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+const WS_URL = `${WS_PROTOCOL}//${window.location.hostname}:${BACKEND_PORT}/ws/stream`;
+
+// State
+let liveData = null;
+let ws = null;
+let selectedCities = ['Delhi', 'Mumbai', 'Kolkata', 'Chennai', 'Prayagraj'];
+let isChatting = false;
+
+const CITY_COLORS = {
+  Delhi: '#7fff00',
+  Mumbai: '#38bdf8',
+  Kolkata: '#f5a623',
+  Chennai: '#c084fc',
+  Prayagraj: '#ff6b6b'
+};
+
+// ── Initialize ─────────────────────────────────────────────────
+async function init() {
+  await loadCities();
+  connectWebSocket();
+  setTimeout(loadSnapshot, 2000);
+}
+
+// ── Load Cities ────────────────────────────────────────────────
+async function loadCities() {
+  try {
+    const response = await fetch(`${API_BASE}/api/cities`);
+    const data = await response.json();
+    
+    const grid = document.getElementById('cityGrid');
+    grid.innerHTML = data.cities.map(city => `
+      <div class="city-card ${selectedCities.includes(city.name) ? 'active' : ''}" 
+           onclick="toggleCity('${city.name}')">
+        <div class="city-emoji">${city.emoji}</div>
+        <div class="city-name">${city.name}</div>
+        <div class="city-stats">
+          <span class="city-stat" id="city-${city.name}-co2">CO₂: —</span>
+          <span class="city-stat" id="city-${city.name}-aqi">AQI: —</span>
+        </div>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Failed to load cities:', error);
+  }
+}
+
+// ── Toggle City ────────────────────────────────────────────────
+async function toggleCity(cityName) {
+  if (selectedCities.includes(cityName)) {
+    selectedCities = selectedCities.filter(c => c !== cityName);
+  } else {
+    selectedCities.push(cityName);
+  }
+  
+  if (selectedCities.length === 0) {
+    alert('Please select at least one city');
+    selectedCities.push(cityName);
+    return;
+  }
+  
+  try {
+    await fetch(`${API_BASE}/api/cities/select`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cities: selectedCities })
+    });
+    await loadCities();
+  } catch (error) {
+    console.error('Failed to update cities:', error);
+  }
+}
+
+// ── WebSocket ──────────────────────────────────────────────────
+function connectWebSocket() {
+  try {
+    ws = new WebSocket(WS_URL);
+    
+    ws.onopen = () => {
+      document.getElementById('liveStatus').textContent = 'LIVE';
+    };
+    
+    ws.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data);
+        if (message.type === 'update') {
+          liveData = message.data;
+          renderDashboard();
+        }
+      } catch (error) {
+        console.error('WebSocket message error:', error);
+      }
+    };
+    
+    ws.onclose = () => {
+      document.getElementById('liveStatus').textContent = 'RECONNECTING...';
+      setTimeout(connectWebSocket, 3000);
+    };
+    
+    ws.onerror = () => {
+      setTimeout(connectWebSocket, 5000);
+    };
+  } catch (error) {
+    console.error('WebSocket error:', error);
+    setTimeout(connectWebSocket, 5000);
+  }
+}
+
+// ── Load Snapshot ──────────────────────────────────────────────
+async function loadSnapshot() {
+  if (liveData) return;
+  
+  try {
+    const response = await fetch(`${API_BASE}/api/snapshot`);
+    liveData = await response.json();
+    renderDashboard();
+  } catch (error) {
+    console.error('Failed to load snapshot:', error);
+  }
+}
+
+// ── Render Dashboard ───────────────────────────────────────────
+function renderDashboard() {
+  if (!liveData || !liveData.readings) return;
+  
+  const cities = liveData.cities || {};
+  
+  // Update metrics
+  document.getElementById('totalCO2').textContent = liveData.total_co2?.toFixed(1) || '—';
+  document.getElementById('avgAQI').textContent = liveData.avg_aqi?.toFixed(0) || '—';
+  document.getElementById('activeCities').textContent = Object.keys(cities).length;
+  document.getElementById('zoneCount').textContent = liveData.readings.length;
+  
+  // Update city stats in selector
+  for (const [cityName, cityData] of Object.entries(cities)) {
+    const co2El = document.getElementById(`city-${cityName}-co2`);
+    const aqiEl = document.getElementById(`city-${cityName}-aqi`);
+    if (co2El) co2El.textContent = `CO₂: ${cityData.total_co2?.toFixed(1) || '—'}`;
+    if (aqiEl) aqiEl.textContent = `AQI: ${cityData.avg_aqi?.toFixed(0) || '—'}`;
+  }
+  
+  // Render zones
+  const zonesContainer = document.getElementById('zonesContainer');
+  zonesContainer.innerHTML = liveData.readings.map(zone => {
+    const color = CITY_COLORS[zone.city] || '#7fff00';
+    const isAnomaly = zone.aqi > 300;
+    
+    return `
+      <div class="zone-card">
+        <div class="zone-header">
+          <div class="zone-info">
+            <h3>${zone.zone_name}</h3>
+            <span class="zone-city-label" style="background: ${color}20; color: ${color}">
+              ${zone.city}
+            </span>
+          </div>
+          <div class="zone-badge ${isAnomaly ? 'alert' : 'ok'}">
+            ${isAnomaly ? '⚠ SPIKE' : '✓ OK'}
+          </div>
+        </div>
+        <div class="zone-metrics">
+          <div class="zone-metric">
+            <div class="zone-metric-label">CO₂</div>
+            <div class="zone-metric-value" style="color: ${color}">${zone.co2_kg_hr?.toFixed(1) || '—'}</div>
+          </div>
+          <div class="zone-metric">
+            <div class="zone-metric-label">AQI</div>
+            <div class="zone-metric-value" style="color: ${getAQIColor(zone.aqi)}">${zone.aqi?.toFixed(0) || '—'}</div>
+          </div>
+          <div class="zone-metric">
+            <div class="zone-metric-label">PM2.5</div>
+            <div class="zone-metric-value">${zone.pm25?.toFixed(1) || '—'}</div>
+          </div>
+          <div class="zone-metric">
+            <div class="zone-metric-label">NO₂</div>
+            <div class="zone-metric-value">${zone.no2?.toFixed(0) || '—'}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ── AQI Color ──────────────────────────────────────────────────
+function getAQIColor(aqi) {
+  if (!aqi) return '#7fff00';
+  if (aqi > 300) return '#ff3b3b';
+  if (aqi > 200) return '#ff6b35';
+  if (aqi > 100) return '#f5a623';
+  return '#7fff00';
+}
+
+// ── Chat Functions ─────────────────────────────────────────────
+async function sendMessage() {
+  if (isChatting) return;
+  
+  const input = document.getElementById('chatInput');
+  const question = input.value.trim();
+  if (!question) return;
+  
+  input.value = '';
+  isChatting = true;
+  document.getElementById('sendButton').disabled = true;
+  
+  appendMessage('user', question);
+  showTyping();
+  
+  try {
+    const response = await fetch(`${API_BASE}/api/chat/stream`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question })
+    });
+    
+    hideTyping();
+    
+    const messageId = appendStreamingMessage();
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+      
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        
+        try {
+          const data = JSON.parse(line.slice(6));
+          if (data.token) {
+            appendToken(messageId, data.token);
+          }
+          if (data.done) {
+            finalizeMessage(messageId, data.sources);
+          }
+        } catch (e) {}
+      }
+    }
+  } catch (error) {
+    hideTyping();
+    appendMessage('ai', '⚠️ Error connecting to AI. Please check that the backend is running.');
+  }
+  
+  isChatting = false;
+  document.getElementById('sendButton').disabled = false;
+}
+
+function askQuestion(question) {
+  document.getElementById('chatInput').value = question;
+  sendMessage();
+}
+
+function appendMessage(role, text) {
+  const messagesContainer = document.getElementById('chatMessages');
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `message ${role}`;
+  messageDiv.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+  messagesContainer.appendChild(messageDiv);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+let typingIndicator = null;
+
+function showTyping() {
+  const messagesContainer = document.getElementById('chatMessages');
+  typingIndicator = document.createElement('div');
+  typingIndicator.className = 'typing-indicator';
+  typingIndicator.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+  messagesContainer.appendChild(typingIndicator);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function hideTyping() {
+  if (typingIndicator) {
+    typingIndicator.remove();
+    typingIndicator = null;
+  }
+}
+
+let currentStreamingMessage = null;
+
+function appendStreamingMessage() {
+  const messagesContainer = document.getElementById('chatMessages');
+  currentStreamingMessage = document.createElement('div');
+  currentStreamingMessage.className = 'message ai';
+  currentStreamingMessage.id = 'streaming-message';
+  messagesContainer.appendChild(currentStreamingMessage);
+  return 'streaming-message';
+}
+
+function appendToken(messageId, token) {
+  const message = document.getElementById(messageId);
+  if (message) {
+    message.innerHTML += token.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+  }
+}
+
+function finalizeMessage(messageId, sources) {
+  if (sources && sources.length > 0) {
+    const message = document.getElementById(messageId);
+    if (message) {
+      const sourcesHtml = `
+        <div class="message-sources">
+          📚 <strong>Policy Sources:</strong> ${sources.map(s => s.title).join(', ')}
+        </div>
+      `;
+      message.innerHTML += sourcesHtml;
+    }
+  }
+  currentStreamingMessage = null;
+}
+
+// ── Initialize on Load ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', init);
+
+// Refresh snapshot every 30 seconds as fallback
+setInterval(() => {
+  if (!liveData) loadSnapshot();
+}, 30000);
+</script>
+
+</body>
+</html>

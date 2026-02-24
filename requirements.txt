@@ -1,0 +1,26 @@
+# GreenPulse — Production Requirements
+# Real vector RAG: FAISS + all-MiniLM-L6-v2 (local) + Gemini LLM
+
+# Core server
+fastapi
+uvicorn[standard]
+websockets
+
+# Langchain stack
+langchain
+langchain-core
+langchain-community
+langchain-google-genai
+langchain-text-splitters
+langchain-huggingface
+
+# Vector search (local, no API needed)
+faiss-cpu
+sentence-transformers
+# HTTP + utils
+httpx
+python-dotenv
+numpy
+pydantic
+pandas
+dotenv

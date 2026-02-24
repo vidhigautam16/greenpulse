@@ -1,0 +1,19 @@
+run = "python run.py"
+language = "python3"
+entrypoint = "run.py"
+
+[nix]
+channel = "stable-22_11"
+
+[env]
+PYTHONUNBUFFERED = "1"
+PATH = "/home/runner/$REPL_SLUG/.pythonlibs/bin:/nix/store/1yagn5s8sf7kcs2hkccgf8d0wxlrv5sz-python3-3.10.8/bin:/nix/store/gjr9ylw0x89xhymqsnkj3j7qhw8ykkkd-patchelf-0.15.0/bin:/nix/store/54jxzhskfmx4ym8vp9cxn4ggjqbnrhhk-gcc-wrapper-11.3.0/bin:/nix/store/2qld0m1lxvb41jlzf8lds1f29d7qqdsf-gcc-11.3.0/bin:/nix/store/c67qg4c10gqzrnzwfavcp11wl2xz2l14-glibc-2.35-224-bin/bin:/nix/store/7r4xr8p8d5wmqfggayk7f31b8h0a0lsd-binutils-wrapper-2.39/bin:/nix/store/nr5hqnrn89ccdh8lrzzql8slpz5zr7zy-binutils-2.39/bin:/home/runner/$REPL_SLUG/.config/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+[[ports]]
+localPort = 8000
+externalPort = 80
+exposeLocalhost = true
+
+[deployment]
+run = ["sh", "-c", "python run.py"]
+deploymentTarget = "cloudrun"
