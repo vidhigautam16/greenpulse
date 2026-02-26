@@ -27,8 +27,11 @@ except ImportError:
     from langchain.schema import Document
 
 from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
+
+# Use Google's embedding API instead of downloading local model
+# No 22MB download - instant startup via API
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 
 # ── 8 Indian Climate Policy Documents ─────────────────────────────
@@ -90,7 +93,7 @@ class LangchainRAG:
 
     def __init__(self):
         self.vectorstore: Optional[FAISS] = None
-        self.embeddings: Optional[HuggingFaceEmbeddings] = None
+        self.embeddings: Optional[GoogleGenerativeAIEmbeddings] = None
         self.llm: Optional[ChatGoogleGenerativeAI] = None
         self._ready = False
         self._init_error: Optional[str] = None
@@ -101,14 +104,18 @@ class LangchainRAG:
         try:
             os.makedirs(os.path.dirname(FAISS_PATH) if os.path.dirname(FAISS_PATH) else ".", exist_ok=True)
 
-            # ── Step 1: Local embeddings (no API key needed) ────────
-            self._init_stage = "downloading_embeddings"
-            print("  🔧  RAG: loading local embedding model (first time ~30s, then instant)...")
-            self.embeddings = HuggingFaceEmbeddings(
-                model_name="all-MiniLM-L6-v2",
-                model_kwargs={"device": "cpu"},
-                encode_kwargs={"normalize_embeddings": True},
+            # ── Step 1: Google API embeddings (instant, no download) ─
+            self._init_stage = "initializing_embeddings"
+            print("  🔧  RAG: initializing Google embeddings API...")
+            api_key = os.getenv("GOOGLE_API_KEY", "")
+            if not api_key or api_key == "your_key_here":
+                raise ValueError("GOOGLE_API_KEY environment variable is required")
+            
+            self.embeddings = GoogleGenerativeAIEmbeddings(
+                model="models/embedding-001",
+                google_api_key=api_key,  # type: ignore
             )
+            print("  ✅  RAG: Google embeddings API ready!")
 
             # ── Step 2: FAISS vector store ──────────────────────────
             self._init_stage = "loading_vectors"
@@ -140,17 +147,13 @@ class LangchainRAG:
 
             # ── Step 3: Gemini LLM ──────────────────────────────────
             self._init_stage = "loading_llm"
-            api_key = os.getenv("GOOGLE_API_KEY", "")
-            if api_key and api_key != "your_key_here":
-                self.llm = ChatGoogleGenerativeAI(
-                    model="gemini-2.5-flash",
-                    google_api_key=api_key,
-                    temperature=0.4,
-                    streaming=True,
-                )
-                print("  ✅  RAG ready! (FAISS + all-MiniLM-L6-v2 + Gemini 2.5-flash)")
-            else:
-                print("  ✅  RAG ready! (FAISS + all-MiniLM-L6-v2 — add GOOGLE_API_KEY for Gemini)")
+            self.llm = ChatGoogleGenerativeAI(
+                model="gemini-2.5-flash",
+                google_api_key=api_key,
+                temperature=0.4,
+                streaming=True,
+            )
+            print("  ✅  RAG ready! (FAISS + Google Embeddings + Gemini 2.5-flash)")
 
             self._init_stage = "ready"
             self._ready = True
@@ -202,11 +205,11 @@ class LangchainRAG:
                 yield f"❌ RAG initialization failed: {self._init_error[:200]}...\n"
                 return
             
-            # Show progress every 5 seconds
+                # Show progress every 5 seconds
             if int(elapsed) - last_progress >= 5:
                 stage_msg = {
                     "starting": "Initializing...",
-                    "downloading_embeddings": "Downloading embedding model (22MB)...",
+                    "initializing_embeddings": "Initializing embeddings API...",
                     "loading_vectors": "Loading vector database...",
                     "loading_llm": "Loading language model..."
                 }.get(self._init_stage, f"Working... ({self._init_stage})")
