@@ -194,6 +194,7 @@ class LangchainRAG:
         check_interval = 1.0
         
         last_progress = -10
+        elapsed = 0
         while not self._ready and elapsed < timeout:
             elapsed = time.time() - start_time
             
