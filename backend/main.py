@@ -177,6 +177,19 @@ def rag_status():
     }
 
 
+@app.post("/api/rag/preload")
+def preload_rag():
+    """Trigger RAG loading on page load so it's ready when user wants to chat."""
+    def _trigger_load():
+        try:
+            get_rag_lazy()
+        except Exception:
+            pass
+    import threading
+    threading.Thread(target=_trigger_load, daemon=True).start()
+    return {"status": "loading_triggered"}
+
+
 # ── Frontend ───────────────────────────────────────────────────────
 frontend_dir = Path(__file__).parent.parent / "frontend"
 if frontend_dir.exists():
