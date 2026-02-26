@@ -1,37 +1,76 @@
 """
 GreenPulse — Langchain RAG Engine (Production Vector Version)
-Embeddings : all-MiniLM-L6-v2  (22MB local model, downloads once, no API key)
+Embeddings : Google text-embedding-004 via google-generativeai SDK (no download)
 Vector DB  : FAISS              (in-memory, saved to disk, instant reload)
-LLM        : Gemini 1.5 Flash   (streaming responses)
-
-Why this stack:
-  - Real neural vector search (384-dim dense embeddings)
-  - Zero API dependency for retrieval
-  - Model downloads once (~22MB), then loads from disk in <1 sec
-  - FAISS is the gold standard for vector search (used by Meta, Google)
-  - Fully Langchain-native — judges can see the proper RAG pipeline
+LLM        : Gemini 2.5 Flash   (streaming responses)
 """
 
 import os, asyncio, threading
 from typing import List, Dict, AsyncGenerator, Optional
 
+import requests
+from langchain_core.embeddings import Embeddings
+
 # Langchain imports
 try:
     from langchain_text_splitters import RecursiveCharacterTextSplitter
 except ImportError:
-    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain.text_splitter import RecursiveCharacterTextSplitter  # type: ignore
 
 try:
     from langchain_core.documents import Document
 except ImportError:
-    from langchain.schema import Document
+    from langchain.schema import Document  # type: ignore
 
 from langchain_community.vectorstores import FAISS
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-# Use Google's embedding API instead of downloading local model
-# No 22MB download - instant startup via API
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
+class GeminiEmbeddings(Embeddings):
+    """
+    LangChain-compatible embeddings using Gemini REST API directly (v1, not v1beta).
+    Avoids all SDK version issues — just plain HTTP to the stable v1 endpoint.
+    Model: text-embedding-004 (768-dim, Google's best free embedding model).
+    """
+
+    # v1beta is correct — text-embedding-004 is not on v1 stable
+    BASE = "https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004"
+
+    def __init__(self, api_key: str):
+        self.api_key = api_key
+
+    def _embed_one(self, text: str, task_type: str) -> List[float]:
+        resp = requests.post(
+            f"{self.BASE}:embedContent",
+            params={"key": self.api_key},
+            json={"model": "models/text-embedding-004", "content": {"parts": [{"text": text}]}, "taskType": task_type},
+            timeout=30,
+        )
+        resp.raise_for_status()
+        return resp.json()["embedding"]["values"]
+
+    def _batch_embed(self, texts: List[str], task_type: str) -> List[List[float]]:
+        # batchEmbedContents on v1beta
+        resp = requests.post(
+            f"{self.BASE}:batchEmbedContents",
+            params={"key": self.api_key},
+            json={"requests": [
+                {"model": "models/text-embedding-004", "content": {"parts": [{"text": t}]}, "taskType": task_type}
+                for t in texts
+            ]},
+            timeout=60,
+        )
+        if resp.status_code == 404:
+            # fallback: embed one by one
+            return [self._embed_one(t, task_type) for t in texts]
+        resp.raise_for_status()
+        return [item["values"] for item in resp.json()["embeddings"]]
+
+    def embed_documents(self, texts: List[str]) -> List[List[float]]:
+        return self._batch_embed(texts, "RETRIEVAL_DOCUMENT")
+
+    def embed_query(self, text: str) -> List[float]:
+        return self._batch_embed([text], "RETRIEVAL_QUERY")[0]
 
 
 # ── 8 Indian Climate Policy Documents ─────────────────────────────
@@ -93,11 +132,11 @@ class LangchainRAG:
 
     def __init__(self):
         self.vectorstore: Optional[FAISS] = None
-        self.embeddings: Optional[GoogleGenerativeAIEmbeddings] = None
+        self.embeddings: Optional[GeminiEmbeddings] = None
         self.llm: Optional[ChatGoogleGenerativeAI] = None
         self._ready = False
         self._init_error: Optional[str] = None
-        self._init_stage: str = "starting"  # Track initialization progress
+        self._init_stage: str = "starting"
         threading.Thread(target=self._init, daemon=True).start()
 
     def _init(self):
@@ -110,11 +149,8 @@ class LangchainRAG:
             api_key = os.getenv("GOOGLE_API_KEY", "")
             if not api_key or api_key == "your_key_here":
                 raise ValueError("GOOGLE_API_KEY environment variable is required")
-            
-            self.embeddings = GoogleGenerativeAIEmbeddings(
-                model="models/embedding-001",
-                google_api_key=api_key,  # type: ignore
-            )
+
+            self.embeddings = GeminiEmbeddings(api_key=api_key)
             print("  ✅  RAG: Google embeddings API ready!")
 
             # ── Step 2: FAISS vector store ──────────────────────────
